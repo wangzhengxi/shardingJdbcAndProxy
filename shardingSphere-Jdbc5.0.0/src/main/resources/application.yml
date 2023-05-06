@@ -1,0 +1,43 @@
+spring:
+ shardingsphere:
+  datasource:
+   ds0:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tmaster0?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=UTC
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+   ds1:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tmaster1?characterEncoding=utf8&useUnicode=true&useSSL=false&serverTimezone=UTC
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    username: root
+   names: ds0,ds1
+  rules:
+   sharding:
+    sharding-algorithms:
+     database-inline:
+      props:
+       algorithm-expression: ds$->{Math.abs(user_id) %2}
+      type: INLINE
+     table-inline:
+      props:
+       algorithm-expression: t_order$->{Math.abs(user_id)%10}
+      type: INLINE
+    tables:
+     t_order:
+      actual-data-nodes: ds$->{0..1}.t_order$->{0..9}
+      database-strategy:
+       standard:
+        sharding-algorithm-name: database-inline
+        sharding-column: user_id
+      table-strategy:
+       standard:
+        sharding-algorithm-name: table-inline
+        sharding-column: user_id
+mybatis:
+ mapper-locations: classpath:/mapper/*Mapper.xml
+mybatis-plus:
+ mapper-locations: classpath:mapper/*.xml
+ type-aliases-package: com.wzx.shardingsphere.inline_demo.entity

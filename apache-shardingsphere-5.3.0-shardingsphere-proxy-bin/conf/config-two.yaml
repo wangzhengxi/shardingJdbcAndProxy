@@ -1,0 +1,145 @@
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+######################################################################################################
+# 
+# Here you can configure the rules for the proxy.
+# This example is configuration of replica-query rule.
+# 
+######################################################################################################
+#
+schemaName: ds
+
+dataSources:
+ ds0:
+   url: jdbc:mysql://localhost:3306/tmaster0?characterEncoding=utf8&useUnicode=true&useSSL=false
+   username: root
+   password: root
+   connectionTimeoutMilliseconds: 30000
+   idleTimeoutMilliseconds: 60000
+   maxLifetimeMilliseconds: 1800000
+   maxPoolSize: 50
+   minPoolSize: 1
+ ds1:
+   url: jdbc:mysql://localhost:3306/tmaster1?characterEncoding=utf8&useUnicode=true&useSSL=false
+   username: root
+   password: root
+   connectionTimeoutMilliseconds: 30000
+   idleTimeoutMilliseconds: 60000
+   maxLifetimeMilliseconds: 1800000
+   maxPoolSize: 50
+   minPoolSize: 1
+
+# rules:
+# - !SHARDING
+#   tables:
+#     t_order:
+#       actualDataNodes: ds$->{0..1}.t_order$->{0..9}
+#       databaseStrategy:
+#         standard:
+#           shardingColumn: user_id
+#           shardingAlgorithmName: ds_inline
+#       tableStrategy:
+#         standard:
+#           shardingColumn: user_id
+#           shardingAlgorithmName: t_order_inline
+#   shardingAlgorithms:
+#     ds_inline:
+#       type: INLINE
+#       props:
+#         algorithm-expression: ds$->{Math.abs(user_id) %2}
+#     t_order_inline:
+#       type: INLINE
+#       props:
+#         algorithm-expression: t_order$->{Math.abs(user_id)%10}
+
+rules:
+- !SHARDING
+  tables:
+    t_order:
+      actualDataNodes: ds0.t_order0,ds0.t_order2,ds0.t_order4,ds0.t_order6,ds0.t_order8,ds1.t_order1,ds1.t_order3,ds1.t_order5,ds1.t_order7,ds1.t_order9
+      # actualDataNodes: ds${0..1}.t_order${0..9}
+      tableStrategy:
+        standard:
+          shardingColumn: user_id
+          shardingAlgorithmName: t_order_inline
+  # bindingTables:
+  #   - t_order
+  defaultDatabaseStrategy:
+    standard:
+      shardingColumn: user_id
+      shardingAlgorithmName: database_inline
+  defaultTableStrategy:
+    none:
+  shardingAlgorithms:
+    database_inline:
+      type: INLINE
+      props:
+        algorithm-expression: ds${user_id % 2}
+    t_order_inline:
+      type: INLINE
+      props:
+        algorithm-expression: t_order${user_id % 10}
+  # keyGenerators:
+  #   snowflake:
+  #     type: SNOWFLAKE
+        
+######################################################################################################
+#
+# If you want to connect to MySQL, you should manually copy MySQL driver to lib directory.
+#
+######################################################################################################
+
+#schemaName: readwrite_splitting_db
+#
+#dataSources:
+#  write_ds:
+#    url: jdbc:mysql://127.0.0.1:3306/demo_write_ds?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 50
+#    minPoolSize: 1
+#  read_ds_0:
+#    url: jdbc:mysql://127.0.0.1:3306/demo_read_ds_0?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 50
+#    minPoolSize: 1
+#  read_ds_1:
+#    url: jdbc:mysql://127.0.0.1:3306/demo_read_ds_1?serverTimezone=UTC&useSSL=false
+#    username: root
+#    password:
+#    connectionTimeoutMilliseconds: 30000
+#    idleTimeoutMilliseconds: 60000
+#    maxLifetimeMilliseconds: 1800000
+#    maxPoolSize: 50
+#    minPoolSize: 1
+#
+#rules:
+#- !READWRITE_SPLITTING
+#  dataSources:
+#    pr_ds:
+#      writeDataSourceName: write_ds
+#      readDataSourceNames:
+#        - read_ds_0
+#        - read_ds_1

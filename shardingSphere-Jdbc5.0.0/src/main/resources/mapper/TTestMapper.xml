@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wzx.shardingsphere.inline_demo.mapper.TTestMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.wzx.shardingsphere.inline_demo.entity.TTest">
+        <id column="order_id1" property="orderId1" />
+        <result column="user_id" property="userId" />
+        <result column="status" property="status" />
+    </resultMap>
+
+    <select id="getById"  resultMap="BaseResultMap">
+        select order_id1,user_id,status
+        from t_test
+        <where>
+            order_id1 = #{orderId1}
+        </where>
+    </select>
+
+
+
+</mapper>
