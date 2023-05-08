@@ -5,7 +5,7 @@
 测试的是shardingsphere-jdbc-core-spring-boot-starter  5.0.0版本
 
 
-实用的application-two.yml文件， db用的是t_order中的两个库十个表。
+实用的application-two21.yml文件， db用的是t_order中的两个库十个表。
 
 controller是TOrderController
 

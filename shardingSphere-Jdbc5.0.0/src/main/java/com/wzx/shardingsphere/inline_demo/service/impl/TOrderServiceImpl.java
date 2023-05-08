@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder>  implements ITOrderService {
@@ -21,8 +23,18 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder>  implem
     }
 
     @Override
-    public TOrder selectByUserId(TOrder tOrder) {
+    public List<TOrder> selectByUserId(TOrder tOrder) {
 
         return tOrderMapper.getByUserId(tOrder.getUserId());
+    }
+
+    @Override
+    public int updateOne(TOrder tOrder){
+        return tOrderMapper.updateOne(tOrder);
+    }
+
+    @Override
+    public int deleteOne(Long userId){
+        return tOrderMapper.deleteOne(userId);
     }
 }

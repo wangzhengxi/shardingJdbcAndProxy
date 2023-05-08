@@ -1,13 +1,18 @@
 package com.wzx.shardingsphere.inline_demo.service;
 
-import com.wzx.shardingsphere.inline_demo.entity.TOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.wzx.shardingsphere.inline_demo.entity.TOrder;
+
+import java.util.List;
 
 
-public interface ITOrderService  extends IService<TOrder>{
+public interface ITOrderService extends IService<TOrder> {
 
     TOrder selectById(TOrder tOrder);
 
-    TOrder selectByUserId(TOrder tOrder);
+    List<TOrder> selectByUserId(TOrder tOrder);
 
+    int updateOne(TOrder tOrder);
+
+    int deleteOne(Long userId);
 }

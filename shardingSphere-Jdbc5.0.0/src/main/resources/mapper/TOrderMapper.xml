@@ -4,12 +4,12 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.wzx.shardingsphere.inline_demo.entity.TOrder">
-        <id column="order_id" property="orderId" />
-        <result column="user_id" property="userId" />
-        <result column="status" property="status" />
+        <id column="order_id" property="orderId"/>
+        <result column="user_id" property="userId"/>
+        <result column="status" property="status"/>
     </resultMap>
 
-    <select id="getById"  resultMap="BaseResultMap">
+    <select id="getById" resultMap="BaseResultMap">
         select order_id,user_id,status
         from t_order
         <where>
@@ -17,7 +17,7 @@
         </where>
     </select>
 
-    <select id="getByUserId"  resultMap="BaseResultMap">
+    <select id="getByUserId" resultMap="BaseResultMap">
         select order_id,user_id,status
         from t_order
         <where>
@@ -25,7 +25,18 @@
         </where>
     </select>
 
+    <update id="updateOne">
+        update t_order
+        <set>
+            <if test="orderId != null">order_id = #{orderId},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where user_id = #{userId}
+    </update>
 
-
+    <delete id="deleteOne">
+        delete
+        from t_order where user_id = #{userId}
+    </delete>
 
 </mapper>

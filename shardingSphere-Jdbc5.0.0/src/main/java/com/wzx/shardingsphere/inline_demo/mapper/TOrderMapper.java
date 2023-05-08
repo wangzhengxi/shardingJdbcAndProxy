@@ -6,11 +6,17 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Mapper
 public interface TOrderMapper extends BaseMapper<TOrder>{
 
     TOrder getById(@Param("orderId") String orderId);
 
-    TOrder getByUserId(@Param("userId") Long userId);
+    List<TOrder> getByUserId(@Param("userId") Long userId);
+
+    int updateOne(TOrder tOrder);
+
+    int deleteOne(@Param("userId") Long userId);
 }
