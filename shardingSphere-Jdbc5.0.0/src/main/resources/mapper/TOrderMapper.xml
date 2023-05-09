@@ -25,6 +25,11 @@
         </where>
     </select>
 
+    <select id="getPage" resultMap="BaseResultMap">
+        select order_id,user_id,status
+        from t_order  ORDER  BY  user_id ASC
+    </select>
+
     <update id="updateOne">
         update t_order
         <set>

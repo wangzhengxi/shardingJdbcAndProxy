@@ -16,6 +16,8 @@ public interface TOrderMapper extends BaseMapper<TOrder>{
 
     List<TOrder> getByUserId(@Param("userId") Long userId);
 
+    List<TOrder> getPage();
+
     int updateOne(TOrder tOrder);
 
     int deleteOne(@Param("userId") Long userId);

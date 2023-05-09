@@ -2,10 +2,14 @@ package com.wzx.shardingsphere.inline_demo.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.wzx.shardingsphere.inline_demo.entity.TOrder;
+import com.wzx.shardingsphere.inline_demo.request.TOrderPageRequest;
 import com.wzx.shardingsphere.inline_demo.request.TOrderRequest;
 import com.wzx.shardingsphere.inline_demo.request.TOrderUpdateRequest;
 import com.wzx.shardingsphere.inline_demo.service.ITOrderService;
+import com.wzx.shardingsphere.inline_demo.utils.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +41,7 @@ public class TOrderController {
             tOrder.setStatus("状态" + i);
             tOrderList.add(tOrder);
         }
-//            itOrderService.saveBatch(tOrderList);
+       itOrderService.saveBatch(tOrderList);
 //            //测试事物
 //            int i = 1 / 0;
         return "success";
@@ -69,6 +73,19 @@ public class TOrderController {
             return tOrderList;
         }
         return null;
+    }
+
+
+    @PostMapping("/getPage")
+    public PageInfo<TOrder> getPage(@RequestBody TOrderPageRequest request) {
+        Page<TOrder> page = itOrderService.getPage(request);
+        PageInfo pageInfo = new PageInfo();
+        pageInfo.setTotalRecord(page.getTotal());
+        pageInfo.setTotalPage(page.getPages());
+        pageInfo.setCurrentPage(page.getPageNum());
+        pageInfo.setPageSize(page.getPageSize());
+        pageInfo.setResult(page.getResult());
+        return pageInfo;
     }
 
 
