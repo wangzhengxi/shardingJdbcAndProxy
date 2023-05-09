@@ -43,16 +43,16 @@ public class TOrderController {
         return "success";
     }
 
-    @GetMapping("/get")
-    public String get(String orderId) {
+    @PostMapping("/getOrderId")
+    public List<TOrder> getOrderId(@RequestBody TOrderRequest request) {
 //            Long orderId = 347817138016223235L;
 //            int userId = 5;
         TOrder tOrder = new TOrder();
 //            tOrder.setUserId(userId);
-        tOrder.setOrderId(orderId);
-        TOrder tOrder1 = itOrderService.selectById(tOrder);
+        tOrder.setOrderId(request.getOrderId());
+        List<TOrder> tOrder1 = itOrderService.selectById(tOrder);
         if (tOrder1 != null) {
-            return tOrder1.getOrderId() + ":" + tOrder1.getStatus() + ":" + tOrder1.getUserId();
+            return tOrder1;
         }
         return null;
     }

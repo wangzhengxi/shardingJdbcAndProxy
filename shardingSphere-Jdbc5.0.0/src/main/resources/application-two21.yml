@@ -29,7 +29,8 @@ spring:
       type: INLINE
     tables:
      t_order:
-      actual-data-nodes: ds$->{0..1}.t_order$->{0..9}
+      actual-data-nodes: ds0.t_order0,ds0.t_order2,ds0.t_order4,ds0.t_order6,ds0.t_order8,ds1.t_order1,ds1.t_order3,ds1.t_order5,ds1.t_order7,ds1.t_order9
+#      actual-data-nodes: ds$->{0..1}.t_order$->{0..9}
       database-strategy:
        standard:
         sharding-algorithm-name: database-inline

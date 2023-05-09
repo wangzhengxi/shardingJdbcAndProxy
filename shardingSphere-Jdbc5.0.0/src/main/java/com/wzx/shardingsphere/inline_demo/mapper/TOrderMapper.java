@@ -12,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface TOrderMapper extends BaseMapper<TOrder>{
 
-    TOrder getById(@Param("orderId") String orderId);
+    List<TOrder>  getById(@Param("orderId") String orderId);
 
     List<TOrder> getByUserId(@Param("userId") Long userId);
 

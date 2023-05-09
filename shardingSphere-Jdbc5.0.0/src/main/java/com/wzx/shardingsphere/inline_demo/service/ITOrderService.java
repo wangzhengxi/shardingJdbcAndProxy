@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ITOrderService extends IService<TOrder> {
 
-    TOrder selectById(TOrder tOrder);
+    List<TOrder>  selectById(TOrder tOrder);
 
     List<TOrder> selectByUserId(TOrder tOrder);
 
